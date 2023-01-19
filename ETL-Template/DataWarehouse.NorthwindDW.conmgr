@@ -1,0 +1,12 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="DataWarehouse.NorthwindDW"
+  DTS:DTSID="{A66E2DDA-0DCA-4055-96CC-B497A9F76946}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectRetryCount="1"
+      DTS:ConnectRetryInterval="5"
+      DTS:ConnectionString="Data Source=DESKTOP-PO204FV;Initial Catalog=nikamooz_Sample_DW_type1;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;Application Name=SSIS-{A66E2DDA-0DCA-4055-96CC-B497A9F76946}DataWarehouse.NorthwindDW;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

@@ -1,0 +1,2349 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="9/10/2019 2:01:48 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="MASOUDTAHERI"
+  DTS:CreatorName="MASOUDTAHERI\MasoudTaheri"
+  DTS:DTSID="{905FA1B6-A0DB-4A5A-BFE4-D889A7D9C982}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.1301.433"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Fill-FactOrders"
+  DTS:PackageType="5"
+  DTS:VersionBuild="90"
+  DTS:VersionGUID="{54D56ADF-3A54-433F-AC52-37FA535947A7}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{CDDA5225-FB47-45DD-A166-BA0566965C05}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="V_LastID">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Create Index for Stage_FactOrder"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{939D00A3-904C-46BB-9879-3D42911C976B}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create Index for Stage_FactOrder"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{CBDECDED-6393-4830-8C00-1BF276584A69}"
+          SQLTask:SqlStatementSource="CREATE UNIQUE INDEX IX_Clustered ON Stage_FactOrder(OrderID,ProductID)&#xA;&#x9;WITH(DATA_COMPRESSION=PAGE)&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Create Table Stage_FactOrder"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{521D7399-7DCF-4B17-A429-52E5B16E7DCA}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create Table Stage_FactOrder"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{CBDECDED-6393-4830-8C00-1BF276584A69}"
+          SQLTask:SqlStatementSource="DROP TABLE IF EXISTS Stage_FactOrder&#xA;GO&#xA;CREATE TABLE Stage_FactOrder&#xA;(&#xA;&#x9;OrderID INT,&#xA;&#x9;OrderDate DATETIME,&#xA;&#x9;OrderDateKey INT,&#xA;&#x9;OrderTimeKey INT,&#xA;&#x9;ProductID INT,&#xA;&#x9;CustomerID NCHAR(5),&#xA;&#x9;ProductKey INT,&#xA;&#x9;CustomerKey INT,&#xA;&#x9;UnitPrice DECIMAL(18,2),&#xA;&#x9;Quantity SMALLINT,&#xA;&#x9;Discount DECIMAL(18,2),&#xA;&#x9;ETL_Hash VARBINARY(100)&#xA;)&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Drop Table Stage_FactOrders"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:Disabled="True"
+      DTS:DTSID="{C752FFAA-B764-4A4D-AAF6-51BE75C95E9D}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Drop Table Stage_FactOrders"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{CBDECDED-6393-4830-8C00-1BF276584A69}"
+          SQLTask:SqlStatementSource="DROP TABLE IF EXISTS Stage_FactOrders" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Fill Stage_FactOrder"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{ABD2C61C-2C02-43B4-A871-6FFC1221EF5F}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Fill Stage_FactOrder">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Fill Stage_FactOrder\Get Data from Orders"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Get Data from Orders"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+	Orders.OrderID,
+	Orders.CustomerID,
+	Orders.OrderDate,
+	FORMAT(Orders.OrderDate,'yyyyMMdd') AS OrderDateKey,
+	FORMAT(Orders.OrderDate,'HHmmss') AS OrderTimeKey,
+	[Order Details].ProductID,
+	[Order Details].UnitPrice,
+	[Order Details].Quantity,
+	[Order Details].Discount
+FROM Orders 
+INNER JOIN [Order Details]  ON 
+	Orders.OrderID=[Order Details].OrderID
+WHERE Orders.OrderID&gt;?</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping">"0:Input",{CDDA5225-FB47-45DD-A166-BA0566965C05};</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Fill Stage_FactOrder\Get Data from Orders.Connections[OleDbConnection]"
+                  connectionManagerID="{2991223F-EF27-406B-BA74-93EED8227BA8}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[OLTP.Northwind]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[CustomerID]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[CustomerID]"
+                      length="5"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[CustomerID]"
+                      name="CustomerID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[OrderID]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderID]"
+                      name="OrderID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[UnitPrice]"
+                      dataType="cy"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[UnitPrice]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[UnitPrice]"
+                      name="UnitPrice"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[Quantity]"
+                      dataType="i2"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[Quantity]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[Quantity]"
+                      name="Quantity"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[Discount]"
+                      dataType="r4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[Discount]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[Discount]"
+                      name="Discount"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[ProductID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[ProductID]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[ProductID]"
+                      name="ProductID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[OrderDate]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderDate]"
+                      name="OrderDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderDateKey]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[OrderDateKey]"
+                      length="4000"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderDateKey]"
+                      name="OrderDateKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderTimeKey]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[OrderTimeKey]"
+                      length="4000"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderTimeKey]"
+                      name="OrderTimeKey"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[CustomerID]"
+                      dataType="wstr"
+                      length="5"
+                      name="CustomerID" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[OrderID]"
+                      dataType="i4"
+                      name="OrderID" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[UnitPrice]"
+                      dataType="cy"
+                      name="UnitPrice" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[Quantity]"
+                      dataType="i2"
+                      name="Quantity" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[Discount]"
+                      dataType="r4"
+                      name="Discount" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[ProductID]"
+                      dataType="i4"
+                      name="ProductID" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[OrderDate]"
+                      dataType="dbTimeStamp"
+                      name="OrderDate" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[OrderDateKey]"
+                      dataType="wstr"
+                      length="4000"
+                      name="OrderDateKey" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].ExternalColumns[OrderTimeKey]"
+                      dataType="wstr"
+                      length="4000"
+                      name="OrderTimeKey" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[OrderID]"
+                      dataType="i4"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[OrderID]"
+                      name="OrderID" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[CustomerID]"
+                      dataType="wstr"
+                      length="5"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[CustomerID]"
+                      name="CustomerID" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[OrderDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[OrderDate]"
+                      name="OrderDate" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[OrderDateKey]"
+                      dataType="wstr"
+                      length="4000"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[OrderDateKey]"
+                      name="OrderDateKey" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[OrderTimeKey]"
+                      dataType="wstr"
+                      length="4000"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[OrderTimeKey]"
+                      name="OrderTimeKey" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[ProductID]"
+                      dataType="i4"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[ProductID]"
+                      name="ProductID" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[UnitPrice]"
+                      dataType="cy"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[UnitPrice]"
+                      name="UnitPrice" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[Quantity]"
+                      dataType="i2"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[Quantity]"
+                      name="Quantity" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[Discount]"
+                      dataType="r4"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[Discount]"
+                      name="Discount" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Insert into Stage_FactOrder"
+              usesDispositions="true"
+              validateExternalMetadata="False"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Stage_FactOrder]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Connections[OleDbConnection]"
+                  connectionManagerID="{CBDECDED-6393-4830-8C00-1BF276584A69}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[DataWarehouse.StageDW]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].Columns[OrderDateKey]"
+                      cachedDataType="wstr"
+                      cachedLength="4000"
+                      cachedName="OrderDateKey"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderDateKey]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderDateKey]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].Columns[OrderID]"
+                      cachedDataType="i4"
+                      cachedName="OrderID"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderID]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderID]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].Columns[OrderTimeKey]"
+                      cachedDataType="wstr"
+                      cachedLength="4000"
+                      cachedName="OrderTimeKey"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderTimeKey]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderTimeKey]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].Columns[CustomerID]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="CustomerID"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[CustomerID]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[CustomerID]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].Columns[ProductID]"
+                      cachedDataType="i4"
+                      cachedName="ProductID"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[ProductID]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[ProductID]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].Columns[UnitPrice]"
+                      cachedDataType="cy"
+                      cachedName="UnitPrice"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[UnitPrice]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[UnitPrice]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].Columns[Quantity]"
+                      cachedDataType="i2"
+                      cachedName="Quantity"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[Quantity]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[Quantity]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].Columns[Discount]"
+                      cachedDataType="r4"
+                      cachedName="Discount"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[Discount]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[Discount]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].Columns[OrderDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="OrderDate"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderDate]"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderDate]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].Columns[ETL_Hash]"
+                      cachedDataType="bytes"
+                      cachedLength="64"
+                      cachedName="ETL_Hash"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[ETL_Hash]"
+                      lineageId="Package\Fill Stage_FactOrder\Multiple Hash.Outputs[HashedOutput].Columns[ETL_Hash]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].Columns[ProductKey]"
+                      cachedDataType="i4"
+                      cachedName="ProductKey"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[ProductKey]"
+                      lineageId="Package\Fill Stage_FactOrder\Lookup ProductKey.Outputs[Lookup Match Output].Columns[ProductKey]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].Columns[CustomerKey]"
+                      cachedDataType="i4"
+                      cachedName="CustomerKey"
+                      externalMetadataColumnId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[CustomerKey]"
+                      lineageId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Outputs[Lookup Match Output].Columns[CustomerKey]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[CustomerID]"
+                      dataType="wstr"
+                      length="5"
+                      name="CustomerID" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderID]"
+                      dataType="i4"
+                      name="OrderID" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[ProductID]"
+                      dataType="i4"
+                      name="ProductID" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[UnitPrice]"
+                      dataType="numeric"
+                      name="UnitPrice"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[Quantity]"
+                      dataType="i2"
+                      name="Quantity" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[Discount]"
+                      dataType="numeric"
+                      name="Discount"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderDate]"
+                      dataType="dbTimeStamp"
+                      name="OrderDate" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[ETL_Hash]"
+                      dataType="bytes"
+                      length="100"
+                      name="ETL_Hash" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[ProductKey]"
+                      dataType="i4"
+                      name="ProductKey" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[CustomerKey]"
+                      dataType="i4"
+                      name="CustomerKey" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderDateKey]"
+                      dataType="i4"
+                      name="OrderDateKey" />
+                    <externalMetadataColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderTimeKey]"
+                      dataType="i4"
+                      name="OrderTimeKey" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Fill Stage_FactOrder\Lookup CustomerKey"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup CustomerKey"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+	CustomerKey,
+	CustomerID	
+FROM DimCustomer</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select * from (SELECT 
+	CustomerKey,
+	CustomerID	
+FROM DimCustomer) [refTable]
+where [refTable].[CustomerID] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CustomerKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CustomerID" dataType="DT_WSTR" length="5" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[CustomerID]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Connections[OleDbConnection]"
+                  connectionManagerID="{A66E2DDA-0DCA-4055-96CC-B497A9F76946}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[DataWarehouse.NorthwindDW]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Inputs[Lookup Input].Columns[CustomerID]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="CustomerID"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[CustomerID]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">CustomerID</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Outputs[Lookup Match Output].Columns[CustomerKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Outputs[Lookup Match Output].Columns[CustomerKey]"
+                      name="CustomerKey"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">CustomerKey</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Fill Stage_FactOrder\Lookup ProductKey"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup ProductKey"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select * from [dbo].[Products]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select * from (select * from [dbo].[Products]) [refTable]
+where [refTable].[ProductID] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="ProductID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductName" dataType="DT_WSTR" length="40" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="SupplierID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CategoryID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="QuantityPerUnit" dataType="DT_WSTR" length="20" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="UnitPrice" dataType="DT_CY" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="UnitsInStock" dataType="DT_I2" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="UnitsOnOrder" dataType="DT_I2" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ReorderLevel" dataType="DT_I2" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Discontinued" dataType="DT_BOOL" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[ProductID]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Fill Stage_FactOrder\Lookup ProductKey.Connections[OleDbConnection]"
+                  connectionManagerID="{2991223F-EF27-406B-BA74-93EED8227BA8}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[OLTP.Northwind]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Fill Stage_FactOrder\Lookup ProductKey.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Lookup ProductKey.Inputs[Lookup Input].Columns[ProductID]"
+                      cachedDataType="i4"
+                      cachedName="ProductID"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[ProductID]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProductID</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Fill Stage_FactOrder\Lookup ProductKey.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Fill Stage_FactOrder\Lookup ProductKey.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Lookup ProductKey.Outputs[Lookup Match Output].Columns[ProductKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\Fill Stage_FactOrder\Lookup ProductKey.Outputs[Lookup Match Output].Columns[ProductKey]"
+                      name="ProductKey"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">ProductID</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Fill Stage_FactOrder\Lookup ProductKey.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Fill Stage_FactOrder\Lookup ProductKey.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Fill Stage_FactOrder\Lookup ProductKey.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Fill Stage_FactOrder\Lookup ProductKey.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Lookup ProductKey.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Fill Stage_FactOrder\Lookup ProductKey.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Lookup ProductKey.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Fill Stage_FactOrder\Lookup ProductKey.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Fill Stage_FactOrder\Multiple Hash"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="https://github.com/keif888/SSISMHash/"
+              description="Creates Multiple Hash's from selected input columns."
+              name="Multiple Hash"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Select the number of threads to use"
+                  name="MultipleThreads"
+                  typeConverter="Martin.SQLServer.Dts.MultipleHash+MultipleThread">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Select True to force Nulls and Empty Strings to be detected in Hash, False for earlier version compatability."
+                  name="SafeNullHandling"
+                  typeConverter="Martin.SQLServer.Dts.MultipleHash+SafeNullHandling">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Select True to enable hashing of Milliseconds, False for earlier version compatability."
+                  name="IncludeMillsecond"
+                  typeConverter="Martin.SQLServer.Dts.MultipleHash+MillisecondHandling">1</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">MultipleHash</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Fill Stage_FactOrder\Multiple Hash.Inputs[Input]"
+                  name="Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Multiple Hash.Inputs[Input].Columns[CustomerID]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="CustomerID"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[CustomerID]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Multiple Hash.Inputs[Input].Columns[UnitPrice]"
+                      cachedDataType="cy"
+                      cachedName="UnitPrice"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[UnitPrice]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Multiple Hash.Inputs[Input].Columns[Quantity]"
+                      cachedDataType="i2"
+                      cachedName="Quantity"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[Quantity]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Multiple Hash.Inputs[Input].Columns[Discount]"
+                      cachedDataType="r4"
+                      cachedName="Discount"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[Discount]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Multiple Hash.Inputs[Input].Columns[ProductID]"
+                      cachedDataType="i4"
+                      cachedName="ProductID"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[ProductID]" />
+                    <inputColumn
+                      refId="Package\Fill Stage_FactOrder\Multiple Hash.Inputs[Input].Columns[OrderDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="OrderDate"
+                      lineageId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Fill Stage_FactOrder\Multiple Hash.Outputs[HashedOutput]"
+                  description="Hashed rows are directed to this output."
+                  name="HashedOutput"
+                  synchronousInputId="Package\Fill Stage_FactOrder\Multiple Hash.Inputs[Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Fill Stage_FactOrder\Multiple Hash.Outputs[HashedOutput].Columns[ETL_Hash]"
+                      dataType="bytes"
+                      length="64"
+                      lineageId="Package\Fill Stage_FactOrder\Multiple Hash.Outputs[HashedOutput].Columns[ETL_Hash]"
+                      name="ETL_Hash">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Select the Hash Type that will be used for this output column."
+                          name="HashType"
+                          typeConverter="Martin.SQLServer.Dts.MultipleHash+HashTypeEnumerator, MultipleHash2017, Version=1.0.0.0, Culture=neutral, PublicKeyToken=51c551904274ab44">6</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Enter the Lineage ID's that will be used to calculate the hash for this output column."
+                          name="InputColumnLineageIDs">#{Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[CustomerID]},#{Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[UnitPrice]},#{Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[Quantity]},#{Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[Discount]},#{Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[ProductID]},#{Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output].Columns[OrderDate]}</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Stores the type of the output column"
+                          name="HashOutputType"
+                          typeConverter="Martin.SQLServer.Dts.MultipleHash+OutputTypeEnumerator, MultipleHash2017, Version=1.0.0.0, Culture=neutral, PublicKeyToken=51c551904274ab44">0</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Fill Stage_FactOrder.Paths[HashedOutput]"
+              endId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Inputs[Lookup Input]"
+              name="HashedOutput"
+              startId="Package\Fill Stage_FactOrder\Multiple Hash.Outputs[HashedOutput]" />
+            <path
+              refId="Package\Fill Stage_FactOrder.Paths[Lookup Match Output]"
+              endId="Package\Fill Stage_FactOrder\Lookup ProductKey.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\Fill Stage_FactOrder\Lookup CustomerKey.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\Fill Stage_FactOrder.Paths[Lookup Match Output1]"
+              endId="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder.Inputs[OLE DB Destination Input]"
+              name="Lookup Match Output"
+              startId="Package\Fill Stage_FactOrder\Lookup ProductKey.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\Fill Stage_FactOrder.Paths[OLE DB Source Output]"
+              endId="Package\Fill Stage_FactOrder\Multiple Hash.Inputs[Input]"
+              name="OLE DB Source Output"
+              startId="Package\Fill Stage_FactOrder\Get Data from Orders.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Get LastID from ConfigTable"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{44FA6979-D5B8-47FD-85ED-BA3ABCB14F69}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get LastID from ConfigTable"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{A66E2DDA-0DCA-4055-96CC-B497A9F76946}"
+          SQLTask:SqlStatementSource="SELECT &#xA;&#x9;CAST(LastID AS INT) &#xA;FROM ConfigTable WHERE TableName=N'FactOrder'"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::V_LastID" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{E900A464-C545-4F12-A619-BC27E110F8DE}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\Fill FactOrders"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{8A431996-7A4F-4EF8-85CC-315ED3F92135}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Fill FactOrders"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Sequence Container\Fill FactOrders\Audit"
+                  componentClassID="Microsoft.Lineage"
+                  contactInfo="Audit;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Includes data about the environment in which the package runs. Map system variables to new output columns. For example, add the name of the computer and operator to the data flow."
+                  name="Audit">
+                  <inputs>
+                    <input
+                      refId="Package\Sequence Container\Fill FactOrders\Audit.Inputs[Audit Input 1]"
+                      name="Audit Input 1">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Sequence Container\Fill FactOrders\Audit.Outputs[Audit Output 1]"
+                      exclusionGroup="1"
+                      name="Audit Output 1"
+                      synchronousInputId="Package\Sequence Container\Fill FactOrders\Audit.Inputs[Audit Input 1]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Audit.Outputs[Audit Output 1].Columns[ETL_Time]"
+                          dataType="date"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Audit.Outputs[Audit Output 1].Columns[ETL_Time]"
+                          name="ETL_Time">
+                          <properties>
+                            <property
+                              dataType="System.Int32"
+                              description="Specifies which audit item this column produces."
+                              name="LineageItemSelected"
+                              typeConverter="LineageItemSelected">4</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="Get Data from Stage_FactOrder"
+                  usesDispositions="true"
+                  validateExternalMetadata="False"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+	Stage_FactOrder.OrderID,
+	Stage_FactOrder.OrderDateKey,
+	Stage_FactOrder.OrderTimeKey,
+	Stage_FactOrder.ProductKey,
+	Stage_FactOrder.CustomerKey,
+	Stage_FactOrder.UnitPrice,
+	Stage_FactOrder.Quantity,
+	Stage_FactOrder.Discount,
+	Stage_FactOrder.ETL_Hash
+FROM StageDW.dbo.Stage_FactOrder 
+LEFT JOIN NorthwindDW.dbo.FactOrder ON 
+	Stage_FactOrder.OrderID=FactOrder.OrderID AND 
+	Stage_FactOrder.ProductKey=FactOrder.Productkey  
+WHERE FactOrder.OrderID IS NULL</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Connections[OleDbConnection]"
+                      connectionManagerID="{A66E2DDA-0DCA-4055-96CC-B497A9F76946}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[DataWarehouse.NorthwindDW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[OrderID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[OrderID]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[OrderID]"
+                          name="OrderID"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[OrderDateKey]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[OrderDateKey]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[OrderDateKey]"
+                          name="OrderDateKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[OrderTimeKey]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[OrderTimeKey]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[OrderTimeKey]"
+                          name="OrderTimeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[ProductKey]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[ProductKey]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[ProductKey]"
+                          name="ProductKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[CustomerKey]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[CustomerKey]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[CustomerKey]"
+                          name="CustomerKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[UnitPrice]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[UnitPrice]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[UnitPrice]"
+                          name="UnitPrice"
+                          precision="18"
+                          scale="2"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[Quantity]"
+                          dataType="i2"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[Quantity]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[Quantity]"
+                          name="Quantity"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[Discount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[Discount]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[Discount]"
+                          name="Discount"
+                          precision="18"
+                          scale="2"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[ETL_Hash]"
+                          dataType="bytes"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[ETL_Hash]"
+                          length="100"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[ETL_Hash]"
+                          name="ETL_Hash"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[OrderID]"
+                          dataType="i4"
+                          name="OrderID" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[OrderDateKey]"
+                          dataType="i4"
+                          name="OrderDateKey" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[OrderTimeKey]"
+                          dataType="i4"
+                          name="OrderTimeKey" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[ProductKey]"
+                          dataType="i4"
+                          name="ProductKey" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[CustomerKey]"
+                          dataType="i4"
+                          name="CustomerKey" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[UnitPrice]"
+                          dataType="numeric"
+                          name="UnitPrice"
+                          precision="18"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[Quantity]"
+                          dataType="i2"
+                          name="Quantity" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[Discount]"
+                          dataType="numeric"
+                          name="Discount"
+                          precision="18"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].ExternalColumns[ETL_Hash]"
+                          dataType="bytes"
+                          length="100"
+                          name="ETL_Hash" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[OrderID]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[OrderID]"
+                          name="OrderID" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[OrderDateKey]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[OrderDateKey]"
+                          name="OrderDateKey" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[OrderTimeKey]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[OrderTimeKey]"
+                          name="OrderTimeKey" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[ProductKey]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[ProductKey]"
+                          name="ProductKey" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[CustomerKey]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[CustomerKey]"
+                          name="CustomerKey" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[UnitPrice]"
+                          dataType="numeric"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[UnitPrice]"
+                          name="UnitPrice"
+                          precision="18"
+                          scale="2" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[Quantity]"
+                          dataType="i2"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[Quantity]"
+                          name="Quantity" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[Discount]"
+                          dataType="numeric"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[Discount]"
+                          name="Discount"
+                          precision="18"
+                          scale="2" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[ETL_Hash]"
+                          dataType="bytes"
+                          length="100"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[ETL_Hash]"
+                          name="ETL_Hash" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="Insert into FactOrder"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[FactOrder]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Connections[OleDbConnection]"
+                      connectionManagerID="{A66E2DDA-0DCA-4055-96CC-B497A9F76946}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[DataWarehouse.NorthwindDW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].Columns[ETL_Time]"
+                          cachedDataType="date"
+                          cachedName="ETL_Time"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[ETL_Time]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Audit.Outputs[Audit Output 1].Columns[ETL_Time]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].Columns[CustomerKey]"
+                          cachedDataType="i4"
+                          cachedName="CustomerKey"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[CustomerKey]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[CustomerKey]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].Columns[ETL_Hash]"
+                          cachedDataType="bytes"
+                          cachedLength="100"
+                          cachedName="ETL_Hash"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[ETL_Hash]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[ETL_Hash]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].Columns[OrderID]"
+                          cachedDataType="i4"
+                          cachedName="OrderID"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderID]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[OrderID]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].Columns[OrderDateKey]"
+                          cachedDataType="i4"
+                          cachedName="OrderDateKey"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderDateKey]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[OrderDateKey]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].Columns[OrderTimeKey]"
+                          cachedDataType="i4"
+                          cachedName="OrderTimeKey"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderTimeKey]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[OrderTimeKey]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].Columns[ProductKey]"
+                          cachedDataType="i4"
+                          cachedName="ProductKey"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[Productkey]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[ProductKey]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].Columns[UnitPrice]"
+                          cachedDataType="numeric"
+                          cachedName="UnitPrice"
+                          cachedPrecision="18"
+                          cachedScale="2"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[UnitPrice]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[UnitPrice]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].Columns[Discount]"
+                          cachedDataType="numeric"
+                          cachedName="Discount"
+                          cachedPrecision="18"
+                          cachedScale="2"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[Discount]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[Discount]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].Columns[Quantity]"
+                          cachedDataType="i2"
+                          cachedName="Quantity"
+                          externalMetadataColumnId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[Quantity]"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output].Columns[Quantity]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[CustomerKey]"
+                          dataType="i4"
+                          name="CustomerKey" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[ETL_Time]"
+                          dataType="dbTimeStamp"
+                          name="ETL_Time" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[ETL_TimeStamp]"
+                          dataType="bytes"
+                          length="8"
+                          name="ETL_TimeStamp" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[ETL_Hash]"
+                          dataType="bytes"
+                          length="100"
+                          name="ETL_Hash" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderKey]"
+                          dataType="i4"
+                          name="OrderKey" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderID]"
+                          dataType="i4"
+                          name="OrderID" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderDateKey]"
+                          dataType="i4"
+                          name="OrderDateKey" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[OrderTimeKey]"
+                          dataType="i4"
+                          name="OrderTimeKey" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[Productkey]"
+                          dataType="i4"
+                          name="Productkey" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[UnitPrice]"
+                          dataType="numeric"
+                          name="UnitPrice"
+                          precision="18"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[Quantity]"
+                          dataType="i2"
+                          name="Quantity" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input].ExternalColumns[Discount]"
+                          dataType="numeric"
+                          name="Discount"
+                          precision="18"
+                          scale="2" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Sequence Container\Fill FactOrders.Paths[Audit Output 1]"
+                  endId="Package\Sequence Container\Fill FactOrders\Insert into FactOrder.Inputs[OLE DB Destination Input]"
+                  name="Audit Output 1"
+                  startId="Package\Sequence Container\Fill FactOrders\Audit.Outputs[Audit Output 1]" />
+                <path
+                  refId="Package\Sequence Container\Fill FactOrders.Paths[OLE DB Source Output]"
+                  endId="Package\Sequence Container\Fill FactOrders\Audit.Inputs[Audit Input 1]"
+                  name="OLE DB Source Output"
+                  startId="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\Update LastID in ConfigTable"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{275C7426-D947-4464-BCA8-EAC073A05E15}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Update LastID in ConfigTable"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{A66E2DDA-0DCA-4055-96CC-B497A9F76946}"
+              SQLTask:SqlStatementSource="UPDATE ConfigTable SET &#xA;&#x9;LastID=(SELECT ISNULL(MAX(OrderID),0) FROM StageDW..Stage_FactOrder),&#xA;&#x9;LastETLTime=GETDATE()&#xA;WHERE TableName=N'FactOrder'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Sequence Container.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{B0052695-6521-4BDF-A850-664CBE81B173}"
+          DTS:From="Package\Sequence Container\Fill FactOrders"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Sequence Container\Update LastID in ConfigTable" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update FactOrders"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{EFF0CB88-0740-44B7-8F00-ECB7EF4F7C9A}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update FactOrders"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{A66E2DDA-0DCA-4055-96CC-B497A9F76946}"
+          SQLTask:SqlStatementSource="UPDATE NorthwindDW.dbo.FactOrder SET&#xA;&#x9;FactOrder.OrderDateKey=Stage_FactOrder.OrderDateKey,&#xA;&#x9;FactOrder.OrderTimeKey=Stage_FactOrder.OrderTimeKey,&#xA;&#x9;FactOrder.Productkey=Stage_FactOrder.Productkey,&#xA;&#x9;FactOrder.CustomerKey=Stage_FactOrder.CustomerKey,&#xA;&#x9;FactOrder.UnitPrice=Stage_FactOrder.UnitPrice,&#xA;&#x9;FactOrder.Quantity=Stage_FactOrder.Quantity,&#xA;&#x9;FactOrder.Discount=Stage_FactOrder.Discount,&#xA;&#x9;FactOrder.ETL_Time=GETDATE()&#xA;FROM StageDW.dbo.Stage_FactOrder&#xA;INNER JOIN NorthwindDW.dbo.FactOrder ON &#xA;&#x9;Stage_FactOrder.OrderID=FactOrder.OrderID AND &#xA;&#x9;Stage_FactOrder.ProductKey=FactOrder.Productkey AND &#xA;&#x9;Stage_FactOrder.ETL_Hash&lt;&gt;Stage_FactOrder.ETL_Hash&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{2A631564-1AC4-4E5D-8BE3-8684AA7A1927}"
+      DTS:From="Package\Get LastID from ConfigTable"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Create Table Stage_FactOrder" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{80BB1D48-FC9A-4130-B4EF-0503FA88E252}"
+      DTS:From="Package\Create Table Stage_FactOrder"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Fill Stage_FactOrder" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{978EAAEC-38B0-42AC-B6B2-EE23BF3D4DD9}"
+      DTS:From="Package\Fill Stage_FactOrder"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Create Index for Stage_FactOrder" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{35D2544E-200C-4DD4-A658-7BB69F0909D2}"
+      DTS:From="Package\Create Index for Stage_FactOrder"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Update FactOrders" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{8D704618-6435-41E9-A21F-E875A3322F4D}"
+      DTS:From="Package\Update FactOrders"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Sequence Container" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{8A538967-7698-4813-8E7F-3D36C24B4D42}"
+      DTS:From="Package\Sequence Container"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Drop Table Stage_FactOrders" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="238,42"
+          Id="Package\Create Index for Stage_FactOrder"
+          TopLeft="253,285" />
+        <NodeLayout
+          Size="221,42"
+          Id="Package\Create Table Stage_FactOrder"
+          TopLeft="270,116" />
+        <NodeLayout
+          Size="218,42"
+          Id="Package\Drop Table Stage_FactOrders"
+          TopLeft="282,764" />
+        <NodeLayout
+          Size="174,42"
+          Id="Package\Fill Stage_FactOrder"
+          TopLeft="292.5,200.5" />
+        <NodeLayout
+          Size="213,42"
+          Id="Package\Get LastID from ConfigTable"
+          TopLeft="278,39" />
+        <NodeLayout
+          Size="146,42"
+          Id="Package\Sequence Container\Fill FactOrders"
+          TopLeft="56,12" />
+        <NodeLayout
+          Size="217,42"
+          Id="Package\Sequence Container\Update LastID in ConfigTable"
+          TopLeft="13,103" />
+        <EdgeLayout
+          Id="Package\Sequence Container.PrecedenceConstraints[Constraint]"
+          TopLeft="125.25,54">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,49"
+              Start="0,0"
+              End="0,41.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,41.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <AnnotationLayout
+          Text="به روز رسانی آخرین رکوردی که بر روی آن کار شده است"
+          ParentId="Package\Sequence Container"
+          FontInfo="{assembly:Null}"
+          Size="296,40"
+          Id="0dd888af-9995-46a7-8def-1ff309a6be0c"
+          TopLeft="14,148" />
+        <AnnotationLayout
+          Text="پر کردن جدول فکت"
+          ParentId="Package\Sequence Container"
+          FontInfo="{assembly:Null}"
+          Size="122,40"
+          Id="a1e7f059-2331-4185-8d7f-85358eb968b7"
+          TopLeft="192,13" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="352,243"
+          Size="352,286"
+          Id="Package\Sequence Container"
+          TopLeft="198,455" />
+        <NodeLayout
+          Size="167,42"
+          Id="Package\Update FactOrders"
+          TopLeft="295,366" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="382.5,81">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,35"
+              Start="0,0"
+              End="0,27.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="380,158">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,42.5"
+              Start="0,0"
+              End="0,35">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="375.75,242.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,42.5"
+              Start="0,0"
+              End="0,35">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="375.25,327">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39"
+              Start="0,0"
+              End="0,31.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="376.25,408">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,47"
+              Start="0,0"
+              End="0,39.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,39.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="374,741">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="17,23"
+              Start="0,0"
+              End="17,15.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,7.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,7.5"
+                    Point2="0,11.5"
+                    Point3="4,11.5" />
+                  <mssgle:LineSegment
+                    End="13,11.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="13,11.5"
+                    Point2="17,11.5"
+                    Point3="17,15.5" />
+                  <mssgle:LineSegment
+                    End="17,15.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <AnnotationLayout
+          Text="بدست آوردن آخرین آی دی که داده آن خوانده شده است"
+          ParentId="Package"
+          FontInfo="{assembly:Null}"
+          Size="297,40"
+          Id="61403f76-cfb5-47b0-9c6e-11f4f6d84548"
+          TopLeft="485,35" />
+        <AnnotationLayout
+          Text="ساخت جدول استیج"
+          ParentId="Package"
+          FontInfo="{assembly:Null}"
+          Size="122,40"
+          Id="9213e5d8-e568-4230-8d93-36d2e63b599a"
+          TopLeft="509,109" />
+        <AnnotationLayout
+          Text="پر کردن جدول استیج"
+          ParentId="Package"
+          FontInfo="{assembly:Null}"
+          Size="127,40"
+          Id="d9365446-daf5-4c84-82e8-fd6b3aeeb261"
+          TopLeft="499,191" />
+        <AnnotationLayout
+          Text="ساخت ایندکس برای جدول استیج"
+          ParentId="Package"
+          FontInfo="{assembly:Null}"
+          Size="185,40"
+          Id="61ba98de-b5f9-483c-9d6c-15751ab917a7"
+          TopLeft="519,281" />
+        <AnnotationLayout
+          Text="پاک کردن جدول استیج"
+          ParentId="Package"
+          FontInfo="{assembly:Null}"
+          Size="136,40"
+          Id="f1ac7110-844e-4192-980e-7f43dc7aaee4"
+          TopLeft="514,764" />
+        <AnnotationLayout
+          Text="اگر رکوردهایی در جدول فکت وجود داشته باشد باید آپدیت شوند"
+          ParentId="Package"
+          FontInfo="{assembly:Null}"
+          Size="336,40"
+          Id="d2cefef7-9755-45b6-a227-5abbe3c83174"
+          TopLeft="480,371" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Fill Stage_FactOrder">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="210,42"
+          Id="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder"
+          TopLeft="229.5,405.5" />
+        <NodeLayout
+          Size="181,42"
+          Id="Package\Fill Stage_FactOrder\Get Data from Orders"
+          TopLeft="238.5,34.5" />
+        <NodeLayout
+          Size="142,42"
+          Id="Package\Fill Stage_FactOrder\Multiple Hash"
+          TopLeft="264,130" />
+        <EdgeLayout
+          Id="Package\Fill Stage_FactOrder.Paths[OLE DB Source Output]"
+          TopLeft="332,76.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,53.5"
+              Start="0,0"
+              End="0,46">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,46" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <AnnotationLayout
+          Text="استخراج آخرین رکوردهای خوانده نشده از سیستم&#xA;OLTP"
+          ParentId="Package\Fill Stage_FactOrder"
+          FontInfo="{assembly:Null}"
+          Size="262,56"
+          Id="de88c82c-6fb2-47bb-a33e-6ed28b61f49f"
+          TopLeft="412,23" />
+        <AnnotationLayout
+          Text="درج داده در جدول استیج"
+          ParentId="Package\Fill Stage_FactOrder"
+          FontInfo="{assembly:Null}"
+          Size="148,40"
+          Id="4660ac65-9048-4b44-8ea6-1bd67bfd592a"
+          TopLeft="451,407" />
+        <NodeLayout
+          Size="178,42"
+          Id="Package\Fill Stage_FactOrder\Lookup CustomerKey"
+          TopLeft="251,214" />
+        <EdgeLayout
+          Id="Package\Fill Stage_FactOrder.Paths[HashedOutput]"
+          TopLeft="337.5,172">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,42"
+              Start="0,0"
+              End="0,34.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <AnnotationLayout
+          Text="هش کردن داده برای مقایسه"
+          ParentId="Package\Fill Stage_FactOrder"
+          FontInfo="{assembly:Null}"
+          Size="165,60"
+          Id="ac3006d1-b461-428d-8137-98986330c1c0"
+          TopLeft="419,122" />
+        <AnnotationLayout
+          Text="لوکاپ های در این قسمت پس از هش قرار می گیرد"
+          ParentId="Package\Fill Stage_FactOrder"
+          FontInfo="{assembly:Null}"
+          Size="275,60"
+          Id="76e25f63-69cb-480b-961d-eab6e39ee3f9"
+          TopLeft="436,207" />
+        <NodeLayout
+          Size="169,42"
+          Id="Package\Fill Stage_FactOrder\Lookup ProductKey"
+          TopLeft="254.5,300.5" />
+        <EdgeLayout
+          Id="Package\Fill Stage_FactOrder.Paths[Lookup Match Output]"
+          TopLeft="339.5,256">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,44.5"
+              Start="0,0"
+              End="0,37">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,37" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,12.6953125,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Fill Stage_FactOrder.Paths[Lookup Match Output1]"
+          TopLeft="336.75,342.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,63"
+              Start="0,0"
+              End="0,55.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,55.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,21.9453125,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <AnnotationLayout
+          Text="با توجه به این که این جدول در انباره داده موجود نیست مقدار لوکاپ آن فیک است"
+          ParentId="Package\Fill Stage_FactOrder"
+          FontInfo="{assembly:Null}"
+          Size="421,60"
+          Id="4c03635d-9cec-4fb4-9730-bbb3ee2ccb8f"
+          TopLeft="433,297" />
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Fill Stage_FactOrder\Insert into Stage_FactOrder">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Fill Stage_FactOrder\Get Data from Orders">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Sequence Container\Fill FactOrders">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="178,42"
+          Id="Package\Sequence Container\Fill FactOrders\Insert into FactOrder"
+          TopLeft="339,256" />
+        <NodeLayout
+          Size="103,42"
+          Id="Package\Sequence Container\Fill FactOrders\Audit"
+          TopLeft="383,135" />
+        <NodeLayout
+          Size="228,42"
+          Id="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder"
+          TopLeft="310,22" />
+        <EdgeLayout
+          Id="Package\Sequence Container\Fill FactOrders.Paths[OLE DB Source Output]"
+          TopLeft="424,64">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="10.5,71"
+              Start="0,0"
+              End="10.5,63.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,31.5"
+                    Point2="0,35.5"
+                    Point3="4,35.5" />
+                  <mssgle:LineSegment
+                    End="6.5,35.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="6.5,35.5"
+                    Point2="10.5,35.5"
+                    Point3="10.5,39.5" />
+                  <mssgle:LineSegment
+                    End="10.5,63.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Sequence Container\Fill FactOrders.Paths[Audit Output 1]"
+          TopLeft="431.25,177">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,79"
+              Start="0,0"
+              End="0,71.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,71.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <AnnotationLayout
+          Text="رکوردهایی که در جدول دایمنشن وجود ندارد باید درج شود"
+          ParentId="Package\Sequence Container\Fill FactOrders"
+          FontInfo="{assembly:Null}"
+          Size="308,40"
+          Id="ef7615db-c560-41eb-91a5-be5ce53d267c"
+          TopLeft="568,21" />
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Sequence Container\Fill FactOrders\Insert into FactOrder">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Sequence Container\Fill FactOrders\Get Data from Stage_FactOrder">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Fill Stage_FactOrder\Lookup CustomerKey">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Fill Stage_FactOrder\Lookup ProductKey">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[Products]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
